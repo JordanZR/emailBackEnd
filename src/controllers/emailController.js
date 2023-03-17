@@ -13,7 +13,6 @@ email.send =(req, res)=>{
           }
         });
         */
-
         //Titan email
 
         let transporter = nodemailer.createTransport({
@@ -38,9 +37,12 @@ email.send =(req, res)=>{
 
         let mailOptions = {
             from: 'jordan.zelaya@straydog.cloud', // sender address
-            to: 'jordan.zelayahs@gmail.com', // list of receivers
-            subject: 'Testing mail from Titan!', // Subject line
-            text: 'Hello World!', // plain text body
+            to: [
+                req.body.email,
+                'jordan.zelayahs@gmail.com'
+            ],
+            subject: 'Cotización', // Subject line
+            text: req.body.nombre + " " + req.body.apellido + " de la empresa: " + req.body.empresa + " desea saber lo siguiente: " + req.body.detalle + ". Su número de telefono es: " + req.body.telefono, // plain text body
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -48,10 +50,10 @@ email.send =(req, res)=>{
                 return console.log(error);
             }
             console.log('Message sent: %s', info.messageId);
-            res.send("OK")
+
         });
     }catch (err){
-        res.send("NO")
+        console.log("Error")
     }
 
 }
